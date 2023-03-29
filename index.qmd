@@ -1,0 +1,17 @@
+---
+title: "IA key metrics"
+format:
+    html:
+        echo: false
+---
+
+
+## Siste 30 dager
+```{python}
+from main import load_data, plot_key_metrics
+
+data = load_data()
+
+fig_key_metrics = plot_key_metrics(data, antall_dager=30)
+fig_key_metrics.show()
+```
