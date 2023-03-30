@@ -23,3 +23,9 @@ spec:
         permission: READ
   envFrom:
     - secret: teamia-nada-secret # value is the secret name in Google Secret Manager
+  env:
+    - name: NADA_HOST
+      value: "nada.intern.nav.no"
+    - name: QUARTO_ID
+      value: "2f6249ef-67bc-4fe6-bd35-502f2e739c4e"
+
