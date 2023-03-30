@@ -9,11 +9,6 @@ metadata:
   namespace: teamia
 spec:
   image: {{ image }}
-  resources:
-    limits:
-      memory: 8Gi
-    requests:
-      memory: 1Gi
   ttlSecondsAfterFinished: 340
   schedule: "*/10 7-17 * * *"
   backoffLimit: 2
