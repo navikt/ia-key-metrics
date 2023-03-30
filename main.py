@@ -54,7 +54,7 @@ def plot_key_metrics(data, antall_dager: int):
         ref_brukere_målgruppen,
         ref_ia_tjenester_målgruppen,
     ) = calculate_key_metrics(
-        data, startdato - timedelta(days=1), sluttdato - timedelta(days=1)
+        data, startdato - timedelta(days=30), sluttdato - timedelta(days=30)
     )
 
     fig = sp.make_subplots(
