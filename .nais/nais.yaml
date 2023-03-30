@@ -10,6 +10,8 @@ metadata:
 spec:
   image: {{ image }}
   resources:
+    limits:
+      memory: 8Gi
     requests:
       memory: 1Gi
   ttlSecondsAfterFinished: 340
