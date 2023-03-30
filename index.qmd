@@ -1,8 +1,12 @@
 ---
 title: "IA key metrics"
+execute:
+    echo: false
+    warning: false
 format:
     html:
-        echo: false
+        embed-resources: true
+jupyter: python3
 ---
 
 

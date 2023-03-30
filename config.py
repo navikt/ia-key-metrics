@@ -1,3 +1,5 @@
+NADA_URL = "nada.intern.nav.no"
+QUARTO_ID = "2f6249ef-67bc-4fe6-bd35-502f2e739c4e"
 PROJECT = "teamia-prod-df3d"
 DATASET = "ia_tjenester_metrikker"
 TABLE = "IA-tjenester-metrikker"
