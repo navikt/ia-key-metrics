@@ -66,5 +66,8 @@ ENV XDG_DATA_HOME=/quarto/share
 # Set the user for running the Quarto tool to "python" with UID 1069
 USER 1069
 
+# Give the "python" user execution rights to the script "run.sh".
+RUN chmod +x run.sh
+
 # Specifies the entry point for the Docker image to be the "run.sh" script.
 ENTRYPOINT ["./run.sh"]
