@@ -20,7 +20,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: https://nada.intern.nav.no
+        - host: https://data.nav.no
   gcp:
     bigQueryDatasets:
       - name: ia_tjenester_metrikker
@@ -29,7 +29,6 @@ spec:
     - secret: teamia-nada-secret # value is the secret name in Google Secret Manager
   env:
     - name: NADA_HOST
-      value: "nada.intern.nav.no"
+      value: "data.nav.no"
     - name: QUARTO_ID
       value: "2f6249ef-67bc-4fe6-bd35-502f2e739c4e"
-
