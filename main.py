@@ -72,26 +72,3 @@ def plot_key_metrics(data, antall_dager: int):
         col=1,
     )
     return fig
-
-
-def plot_frequency_forebyggingsplan(data_raw):
-    data = (
-        data_raw[data_raw.kilde_applikasjon=="FOREBYGGINGSPLAN"]
-        .assign(opprettet_date=data_raw["opprettet"].dt.date)
-        .sort_values(by=["orgnr", "opprettet"])
-        .drop_duplicates(subset=["orgnr", "opprettet_date"])
-    )
-
-    idag = datetime.now()
-    count = data[data.opprettet > idag - timedelta(days=30)].orgnr.value_counts()
-
-    fig = go.Figure()
-    fig.add_trace(go.Histogram(x=count))
-    fig.update_layout(
-        height=400,
-        width=500,
-        title="Antall dager virksomheter brukte planen",
-        xaxis_title="Antall dager",
-        yaxis_title="Antall virksomheter",
-    )
-    return fig
