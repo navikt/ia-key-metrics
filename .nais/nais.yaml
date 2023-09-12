@@ -20,7 +20,7 @@ spec:
   accessPolicy:
     outbound:
       external:
-        - host: https://data.nav.no
+        - host: data.nav.no
   gcp:
     bigQueryDatasets:
       - name: ia_tjenester_metrikker
