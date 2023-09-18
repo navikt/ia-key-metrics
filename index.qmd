@@ -17,6 +17,8 @@ format:
 jupyter: python3
 ---
 
+Kildekoden finnes på [GitHub](https://github.com/navikt/ia-key-metrics).
+
 ```{python}
 from main import load_data, plot_key_metrics
 
