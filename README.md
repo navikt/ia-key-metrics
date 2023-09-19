@@ -16,7 +16,7 @@ Installer [black](https://pypi.org/project/black/), en python-kode formatter, me
 
 ## Lokal utvikling
 
-Logg inn i gcp med `gcloud auth login --update-adc`.
+Logg inn i gcp med `gcloud auth application-default login`.
 
 Kjør opp quarto i preview mode med følgende kommando:
 `quarto render index.qmd`
