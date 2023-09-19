@@ -1,6 +1,7 @@
 from google.cloud.bigquery import Client
 from datetime import datetime, timedelta
 
+import pandas as pd
 import plotly.graph_objs as go
 
 import config
@@ -28,32 +29,74 @@ def calculate_key_metrics(data_raw, startdato, sluttdato):
     return antall_åpnet_kort, antall_åpnet_kort_flere_dager
 
 
+def calculate_repeted_use_metrics(
+    data_raw,
+    startdato=datetime.now() - timedelta(days=365),
+    sluttdato=datetime.now(),
+    minimum_days_between_visits=30,
+    kilde_applikasjon="FOREBYGGINGSPLAN",
+):
+    applikasjon_data = data_raw[
+        data_raw.kilde_applikasjon == kilde_applikasjon
+    ].sort_values(by=["opprettet"])
+    datofiltrert_data = applikasjon_data[
+        (applikasjon_data.opprettet > startdato)
+        & (applikasjon_data.opprettet <= sluttdato)
+    ]
+    only_duplicated_data = datofiltrert_data[
+        datofiltrert_data.duplicated("orgnr", keep=False)
+    ]
+
+    first_date_set = only_duplicated_data.drop_duplicates(
+        subset=["orgnr"], keep="first"
+    )
+    last_date_set = only_duplicated_data.drop_duplicates(subset=["orgnr"], keep="last")
+
+    combined_set = first_date_set.merge(last_date_set, on="orgnr")
+    diffed_set = combined_set.assign(
+        diff=(combined_set["opprettet_y"] - combined_set["opprettet_x"])
+    )
+
+    filtered_set = diffed_set[
+        diffed_set["diff"] > timedelta(days=minimum_days_between_visits)
+    ]
+
+    return filtered_set.orgnr.size
+
+
 def plot_key_metrics(data, antall_dager: int):
     sluttdato = datetime.now()
     startdato = sluttdato - timedelta(days=antall_dager)
     antall_åpnet_kort, antall_åpnet_kort_flere_dager = calculate_key_metrics(
         data, startdato, sluttdato
     )
+    antall_brukt_med_måneds_mellomrom = calculate_repeted_use_metrics(data)
 
-    fig = make_key_result_indicator(
+    make_key_result_indicator(
         antall_åpnet_kort,
         300,
         formater_tittel(
             "Antall virksomheter som har interagert med siden",
             "i løpet av de siste 30 dagene",
         ),
-    )
-    fig.show()
+    ).show()
 
-    fig = make_key_result_indicator(
+    make_key_result_indicator(
         antall_åpnet_kort_flere_dager,
         30,
         formater_tittel(
             "Antall virksomheter som har interagert med siden flere dager",
             "i løpet av de siste 30 dagene",
         ),
-    )
-    fig.show()
+    ).show()
+    make_key_result_indicator(
+        antall_brukt_med_måneds_mellomrom,
+        100,
+        formater_tittel(
+            "Antall virksomheter som har gjort noe med minst 30 dager fra første til siste hendelse",
+            "i løpet av de siste 365 dagene",
+        ),
+    ).show()
 
 
 def make_key_result_indicator(verdi, mål, tittel):
