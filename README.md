@@ -18,7 +18,7 @@ Installer [black](https://pypi.org/project/black/), en python-kode formatter, me
 
 Logg inn i gcp med `gcloud auth application-default login`.
 
-Kjør opp quarto i preview mode med følgende kommando:
+Kjør opp quarto med følgende kommando:
 `quarto render index.qmd`
 
 ## Troubleshoot
