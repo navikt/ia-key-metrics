@@ -29,7 +29,7 @@ def calculate_key_metrics(data_raw, startdato, sluttdato):
     return antall_åpnet_kort, antall_åpnet_kort_flere_dager
 
 
-def calculate_repeted_use_metrics(
+def calculate_repeted_key_metrics(
     data_raw,
     startdato,
     sluttdato,
@@ -69,11 +69,11 @@ def plot_key_metrics(data):
     antall_åpnet_kort, antall_åpnet_kort_flere_dager = calculate_key_metrics(
         data, now - timedelta(days=30), now
     )
-    antall_brukt_med_måneds_mellomrom = calculate_repeted_use_metrics(
+    antall_brukt_med_måneds_mellomrom = calculate_repeted_key_metrics(
         data, now - timedelta(days=365), now
     )
 
-    make_key_result_indicator(
+    make_key_metric_indicator(
         antall_åpnet_kort,
         300,
         formater_tittel(
@@ -82,7 +82,7 @@ def plot_key_metrics(data):
         ),
     ).show()
 
-    make_key_result_indicator(
+    make_key_metric_indicator(
         antall_åpnet_kort_flere_dager,
         30,
         formater_tittel(
@@ -90,7 +90,7 @@ def plot_key_metrics(data):
             "i løpet av de siste 30 dagene",
         ),
     ).show()
-    make_key_result_indicator(
+    make_key_metric_indicator(
         antall_brukt_med_måneds_mellomrom,
         100,
         formater_tittel(
@@ -100,7 +100,7 @@ def plot_key_metrics(data):
     ).show()
 
 
-def make_key_result_indicator(verdi, mål, tittel):
+def make_key_metric_indicator(verdi, mål, tittel):
     fig = go.Figure()
     fig.add_trace(make_gauge(verdi, mål))
 
