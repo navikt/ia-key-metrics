@@ -19,12 +19,12 @@ def calculate_key_metrics(data_raw, startdato, sluttdato):
         .sort_values(by=["orgnr", "opprettet"])
         .drop_duplicates(subset=["orgnr", "opprettet_date"])
     )
-    count = data[
+    antall_dager_per_orgnr = data[
         (data.opprettet > startdato) & (data.opprettet <= sluttdato)
     ].orgnr.value_counts()
 
-    antall_åpnet_kort = count.count()
-    antall_åpnet_kort_flere_dager = (count >= 2).sum()
+    antall_åpnet_kort = antall_dager_per_orgnr.count()
+    antall_åpnet_kort_flere_dager = (antall_dager_per_orgnr >= 2).sum()
 
     return antall_åpnet_kort, antall_åpnet_kort_flere_dager
 
