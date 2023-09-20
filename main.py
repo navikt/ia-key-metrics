@@ -31,8 +31,8 @@ def calculate_key_metrics(data_raw, startdato, sluttdato):
 
 def calculate_repeted_use_metrics(
     data_raw,
-    startdato=datetime.now() - timedelta(days=365),
-    sluttdato=datetime.now(),
+    startdato,
+    sluttdato,
     minimum_days_between_visits=30,
     kilde_applikasjon="FOREBYGGINGSPLAN",
 ):
@@ -64,13 +64,14 @@ def calculate_repeted_use_metrics(
     return filtered_set.orgnr.size
 
 
-def plot_key_metrics(data, antall_dager: int):
-    sluttdato = datetime.now()
-    startdato = sluttdato - timedelta(days=antall_dager)
+def plot_key_metrics(data):
+    now = datetime.now()
     antall_åpnet_kort, antall_åpnet_kort_flere_dager = calculate_key_metrics(
-        data, startdato, sluttdato
+        data, now - timedelta(days=30), now
     )
-    antall_brukt_med_måneds_mellomrom = calculate_repeted_use_metrics(data)
+    antall_brukt_med_måneds_mellomrom = calculate_repeted_use_metrics(
+        data, now - timedelta(days=365), now
+    )
 
     make_key_result_indicator(
         antall_åpnet_kort,

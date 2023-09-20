@@ -23,5 +23,5 @@ Kildekoden finnes på [GitHub](https://github.com/navikt/ia-key-metrics).
 from main import load_data, plot_key_metrics
 
 data = load_data()
-plot_key_metrics(data, antall_dager=30)
+plot_key_metrics(data)
 ```
