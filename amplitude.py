@@ -3,12 +3,18 @@ import pandas as pd
 
 
 def hent_antall_besøkende_siste_30_dager():
-    body = requests.get(
+    response = requests.get(
         "https://reops-proxy.intern.nav.no/amplitude/api/3/chart/e-czvqr8g/query"
-    ).json()
+    )
 
-    besøkende = body["data"]["series"][0][-30:]
-    datoer = pd.to_datetime(body["data"]["xValues"][-30:])
+    if not response.ok:
+        print(response)
+        return "NaN"
+
+    body = response.json()
+
+    besøkende = body["data"]["series"][0]
+    datoer = pd.to_datetime(body["data"]["xValues"])
 
     dagens_dato = pd.to_datetime("today")
     startdato = dagens_dato - pd.DateOffset(days=30)
