@@ -19,6 +19,9 @@ spec:
   backoffLimit: 2
   accessPolicy:
     outbound:
+      rules:
+        - application: reops-proxy
+          namespace: team-researchops
       external:
         - host: data.nav.no
   gcp:

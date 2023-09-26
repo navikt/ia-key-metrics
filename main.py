@@ -1,10 +1,11 @@
 from google.cloud.bigquery import Client
 from datetime import datetime, timedelta
 
-import pandas as pd
 import plotly.graph_objs as go
+import plotly.subplots as sp
 
 import config
+from amplitude import hent_antall_besøkende_siste_30_dager
 
 
 def load_data():
@@ -29,7 +30,7 @@ def calculate_key_metrics(data_raw, startdato, sluttdato):
     return antall_åpnet_kort, antall_åpnet_kort_flere_dager
 
 
-def calculate_repeted_key_metrics(
+def calculate_repeated_key_metrics(
     data_raw,
     startdato,
     sluttdato,
@@ -69,7 +70,7 @@ def plot_key_metrics(data):
     antall_åpnet_kort, antall_åpnet_kort_flere_dager = calculate_key_metrics(
         data, now - timedelta(days=30), now
     )
-    antall_brukt_med_måneds_mellomrom = calculate_repeted_key_metrics(
+    antall_brukt_med_måneds_mellomrom = calculate_repeated_key_metrics(
         data, now - timedelta(days=365), now
     )
 
@@ -97,6 +98,27 @@ def plot_key_metrics(data):
             "Antall virksomheter som har gjort noe med minst 30 dager fra første til siste hendelse",
             "i løpet av de siste 365 dagene",
         ),
+    ).show()
+
+    sp.make_subplots(
+        rows=2,
+        cols=1,
+        specs=[
+            [{"type": "indicator"}], [{"type": "indicator"}],
+        ],
+    ).add_trace(
+        go.Indicator(
+            mode="number",
+            value=hent_antall_besøkende_siste_30_dager(),
+            # number={"valueformat": ", g"},
+            title={
+                "text": "<br><span style='font-size:0.7em;color:gray'>{0}</span>".format(
+                    "Antall besøkende siste 30 dager"
+                )
+            },
+        ),
+        row=1,
+        col=1,
     ).show()
 
 
