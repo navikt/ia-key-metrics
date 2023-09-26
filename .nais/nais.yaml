@@ -15,8 +15,7 @@ spec:
     requests:
       memory: 1Gi
   ttlSecondsAfterFinished: 340
-  #schedule: "0 5-15/1 * * *"
-  schedule: "*/5 * * * *"
+  schedule: "0 5-15/1 * * *"
   backoffLimit: 2
   accessPolicy:
     outbound:
