@@ -165,8 +165,10 @@ def formater_tittel(overskrift, undertekst):
 
 def hent_antall_besøkende_siste_30_dager():
     print("Starter henting fra Amplitude")
+    # TODO: Bruk ingress lokalt
+    # "https://reops-proxy.intern.nav.no/amplitude/api/3/chart/e-czvqr8g/query"
     response = requests.get(
-        "https://reops-proxy.intern.nav.no/amplitude/api/3/chart/e-czvqr8g/query"
+        "http://reops-proxy.team-researchops/amplitude/api/3/chart/e-czvqr8g/query"
     )
 
     print(response)
