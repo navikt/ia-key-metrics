@@ -1,3 +1,5 @@
+import pandas as pd
+import requests
 from google.cloud.bigquery import Client
 from datetime import datetime, timedelta
 
@@ -5,7 +7,6 @@ import plotly.graph_objs as go
 import plotly.subplots as sp
 
 import config
-from amplitude import hent_antall_besøkende_siste_30_dager
 
 
 def load_data():
@@ -104,7 +105,8 @@ def plot_key_metrics(data):
         rows=2,
         cols=1,
         specs=[
-            [{"type": "indicator"}], [{"type": "indicator"}],
+            [{"type": "indicator"}],
+            [{"type": "indicator"}],
         ],
     ).add_trace(
         go.Indicator(
@@ -159,3 +161,31 @@ def make_gauge(verdi, mål):
 
 def formater_tittel(overskrift, undertekst):
     return f"<br><span style='font-size:1em;color:gray'>{overskrift}<br><span style='font-size:0.7em;color:gray'>{undertekst}"
+
+
+def hent_antall_besøkende_siste_30_dager():
+    print("Starter henting fra Amplitude")
+    response = requests.get(
+        "https://reops-proxy.intern.nav.no/amplitude/api/3/chart/e-czvqr8g/query"
+    )
+
+    print(response)
+
+    if not response.ok:
+        return "NaN"
+
+    body = response.json()
+
+    besøkende = body["data"]["series"][0]
+    datoer = pd.to_datetime(body["data"]["xValues"])
+
+    dagens_dato = pd.to_datetime("today")
+    startdato = dagens_dato - pd.DateOffset(days=30)
+
+    siste_30_dager = pd.DataFrame(data=besøkende, index=datoer)["value"][
+        startdato:dagens_dato
+    ]
+
+    print("Hentet data fra Amplitude")
+
+    return siste_30_dager.sum()
